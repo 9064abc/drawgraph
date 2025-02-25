@@ -34,10 +34,36 @@ function findNum(len,index,txt){
         num += txt[k]
         k += 1
     }
+    if(txt[k] == "("){
+        num = persetext(len,k+1,txt);
+        k = num[1]
+        num = num[0]
+    }
     return [num,k];
 }
-function perseMultipler(len,index,txt){
-    i = index;
+function perseMultipler(len,index,txt,numA){
+    var formulaIn;
+    var numB;
+    var i = index;
+    formulaIn = new Node(txt[i],numA)
+    i += 1
+    numB = findNum(len,i,txt);
+    i = numB[1];
+    numB = numB[0];
+    if((typeof numB) == "string"){  
+        numB = Number(numB);
+    }
+    
+    if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
+        numB = perseX(len,i,txt,numB);
+        formulaIn.Nchildren(numB[0]);
+        return [formulaIn,numB[1]];
+    }
+    else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
+        formulaIn.Nchildren(numB);
+        return [formulaIn,i];
+    }
+    
 }
 function perseX(len,index,txt,numA){
     var formulaIn;
@@ -45,10 +71,10 @@ function perseX(len,index,txt,numA){
     var i = index;
     formulaIn = new Node(txt[i],numA);
     i += 1
-    numB = findNum(len,j,txt);
+    numB = findNum(len,i,txt);
     i = numB[1];
     numB = numB[0];
-    if(numB != ""){  
+    if((typeof numB) == "string"){  
         numB = Number(numB);
     }
     
@@ -62,11 +88,7 @@ function perseX(len,index,txt,numA){
         formulaIn.Nchildren(numB[0]);
         return [formulaIn,numB[1]];
     }
-    else if(i<len && txt[i]=="("){
-        numB = persetext(len,i+1,txt);
-        formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]];
-    }
+    
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
         return [formulaIn,i];
@@ -78,10 +100,10 @@ function persePlus(len,index,txt,numA){
     var i = index;
     formulaIn = new Node(txt[i],numA);
     i += 1
-    numB = findNum(len,j,txt);
+    numB = findNum(len,i,txt);
     i = numB[1];
     numB = numB[0];
-    if(numB != ""){  
+    if((typeof numB) == "string"){  
         numB = Number(numB);
     }
     
@@ -97,87 +119,44 @@ function persePlus(len,index,txt,numA){
 }
 function persetext(len,index,txt){   //()内の解析
   //var len = txt.length;
-  var numA = "";
-  var formulaIn;
+    var numA = "";
+    var formulaIn;
+    j = index
   /*for(var j=index;j<len;j++)*/ while(txt[j] != ")"){
     
-    numA = findNum(len,j,txt);
-    j = numA[1];
-    numA = numA[0];
-    if(numA != ""){  
-      numA = Number(numX);
+        numA = findNum(len,j,txt);
+        j = numA[1];
+        numA = numA[0];
+        if((typeof numA) == "string"){  
+            numA = Number(numX);
+        }
+        /*if(txt[j]=="("){
+            numA = persetext(len,j+1,txt); // "("の次から読む
+            j = numA[1]
+            numA = numA[0];
+        }
+        else*/ if(txt[j]=="+" || txt[j]=="-"){
+            formulaIn = persePlus(len,j,txt,numA);
+            j = formulaIn[1];
+            formulaIn = formulaIn[0];
+        }
+        else if(txt[j]=="*" || txt[j]=="/"){
+            numA = perseX(len,j,txt,numA);
+            j = numA[1];
+            numA = numA[0];
+        }
+        else if(txt[j] == "^"){
+            numA = perseMultipler(len,j,txt,numA);
+            j = numA[1];
+            numA = numA[0];
+        }
     }
-    if(txt[j]=="("){
-      numA = persetext(len,j+1,txt); // "("の次から読む
-      j = numA[1]
-      numA = numA[0];
+    if(formulaIn == ""){
+        formulaIn = numA;
     }
-    else if(txt[j]=="+" || txt[j]=="-"){
-      formulaIn = persePlus(len,j,txt,numA);
-      j = formulaIn[1];
-      formulaIn = formulaIn[0];
-    }
-    else if(txt[j]=="*" || txt[j]=="/"){
-      numA = perseX(len,j,txt,numA);
-      j = numA[1];
-      numA = numA[0];
-    }
-    else if(txt[j] == "^"){
-      numA = perseMultipler(len,j,txt,numA);
-      j = numA[1];
-      numA = numA[0];
-    }
-  }
-  if(formulaIn == ""){
-    formulaIn = numA;
-  }
-  return [formulaIn,j+1];
+    return [formulaIn,j+1];
 }
-function Makeformula(len,txt){
-  //var len = txt.length;
-  var formula = new Node("(","?");
-  var numA = "";
-  for(var i=0;i<len;i++){
-    if(isNaN(txt[i]) == false){
-      numA += txt[i];
-    }else{
-    if(numA != ""){  
-      numA = Number(numA);
-    }
-    if(txt[i]=="("){
-      //formula = new Node("()","?");
-      var child = persetext(len,index+1); //()内のノード
-      formula.Nchildren(child);
-      
-    }
-    else if(txt[i]=="+"){
-      formula = new Node("+",numA);
-      var child = persetext(len,index,txt);
-      formula.Nchildren(child);
-    }
-    else if(txt[i]=="-"){
-      formula = new Node("-",numA);
-      var child = persetext(len,index,txt);
-      formula.Nchildren(child);
-    }
-    else if(txt[i]=="*"){
-      formula = new Node("*","?");
-      var child = persetext(len,index,txt);
-      formula.Nchildren(child);
-    }
-    else if(txt[i]=="/"){
-      formula = new Node("/","?");
-      var child = persetext(len,index,txt);
-      formula.Nchildren(child);
-    }
-    else if(txt[i]=="^"){
-      formula = new Node("/","?");
-      var child = persetext(len,index,txt);
-      formula.Nchildren(child);
-    }
-    }
-  }
-}
+
 function Calc(x,y,formula){
   
 }
@@ -189,11 +168,12 @@ function setPixel(x,y,r,g,b,a){
   data[index + 3] = a;
 }
 function draw(){
-  var formulatxt = FormulaElem.value;
-  var len = formulatxt.length;
-  console.log(formulatxt);
-  formula = Makeformula(len,formulatxt);
-  for (let x = -250; x < 250; x++) {
+    var formulatxt = FormulaElem.value;
+    var len = formulatxt.length;
+    console.log(formulatxt);
+    formula = persetext(len,0,formulatxt);
+    console.log(formula);
+  /*for (let x = -250; x < 250; x++) {
     for (let y = -250; y < 250; y++) {
       if (Calc(x,y,formula)) { // 例: 半径100以内の円
         let canvasX = x + correctX;
@@ -204,7 +184,7 @@ function draw(){
         setPixel(x, y, 0, 255, 0, 255);
       }
     }
-  }
+  }*/
   
 }
 

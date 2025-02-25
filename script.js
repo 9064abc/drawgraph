@@ -129,7 +129,7 @@ function persetext(len,index,txt){   //()内の解析
         j = numA[1];
         numA = numA[0];
         if((typeof numA) == "string"){  
-            numA = Number(numX);
+            numA = Number(numA);
         }
         /*if(txt[j]=="("){
             numA = persetext(len,j+1,txt); // "("の次から読む

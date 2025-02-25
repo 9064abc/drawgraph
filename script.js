@@ -189,7 +189,32 @@ function persetext(len,index,txt){   //()内の解析
 }
 
 function Calc(x,y,formula){
-  
+    var numA = formula.children[0];
+    var numB = formula.children[1];
+    var operator = formula.node_type;
+    var ans;
+    if(isNaN(numA)){
+        numA = Calc(numA);
+    }
+    if(isNaN(numB)){
+        numB = Calc(numB);
+    }
+    if(operator == "+"){
+        ans = numA + numB;
+    }
+    else if(operator == "-"){
+        ans = numA - numB;
+    }
+    else if(operator == "*"){
+        ans = numA * numB;
+    }
+    else if(operator == "/"){
+        ans = numA / numB;
+    }
+    else if(operator == "^"){
+        ans = numA ** numB;
+    }
+    return ans;
 }
 function setPixel(x,y,r,g,b,a){
   var index = (canvasY * width + canvasX) * 4;
@@ -204,6 +229,8 @@ function draw(){
     console.log(formulatxt);
     formula = persetext(len,0,formulatxt)[0];
     console.log(formula);
+    ans = Calc(0,0,formula);
+    console.log(ans);
   /*for (let x = -250; x < 250; x++) {
     for (let y = -250; y < 250; y++) {
       if (Calc(x,y,formula)) { // 例: 半径100以内の円

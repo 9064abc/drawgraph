@@ -257,10 +257,10 @@ function draw(){
             if (Calc(x,y,formula)>1) { // 例: 半径100以内の円
                 let canvasX = x + correctX;
                 let canvasY = correctY - y;
-                setPixel(x, y, 255, 0, 0, 255); // 赤で塗る
+                setPixel(canvasX, canvasY, 255, 0, 0, 255); // 赤で塗る
             }
             else{
-                setPixel(x, y, 0, 255, 0, 255);
+                setPixel(canvasX, canvasY, 0, 255, 0, 255);
             }
         }
     }

@@ -1,3 +1,4 @@
+//足し算引き算の順序　書き直しの必要あり
 const FormulaElem = document.getElementById("formulaTXT");
 const cvs = document.getElementById("cvs");
 const calcButton = document.getElementById("calc");

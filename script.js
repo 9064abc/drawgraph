@@ -132,9 +132,11 @@ function persePlus(len,index,txt,numA){
         //return [formulaIn,numB[1]]
     }
     else if(i<len && (txt[i]=="+" || txt[i]=="-")){
-        numB = persePlus(len,i,txt,numB);
-        formulaIn.Nchildren(numB[0]);
-        i = numB[1]
+        formulaIn.Nchildren(numB)
+        formulaIn = persePlus(len,i,txt,formulaIn);
+        //formulaIn.Nchildren(numB[0]);
+        i = formulaIn[1];
+        formulaIn = formulaIn[0]
         //return [formulaIn,numB[1]]
     }
     else if(i<len && txt[i]=="^"){
@@ -235,7 +237,7 @@ function Calc(x,y,formula){
     return ans;
 }
 function setPixel(x,y,r,g,b,a){
-  var index = (canvasY * width + canvasX) * 4;
+  var index = (y * width + x) * 4;
   data[index] = r;
   data[index + 1] = g;
   data[index + 2] = b;

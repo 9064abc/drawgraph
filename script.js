@@ -31,7 +31,7 @@ class Node{ //Node("+-*/^" , numA , numB)
 function findNum(len,index,txt){
     var k = index
     var num = ""
-    while(isNaN(txt[k] == false) && k<len){
+    while(isNaN(txt[k])==false && k<len){
         num += txt[k]
         k += 1
     }

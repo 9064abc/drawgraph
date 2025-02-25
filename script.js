@@ -22,7 +22,7 @@ class Node{ //Node("+-*/^" , numA , numB)
           this.children.push(child);
         }
     }
-    Nchildren(ch){
+    Nchildren(child){
         this.children.push(child);   
     }
 };

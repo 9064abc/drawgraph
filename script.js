@@ -58,13 +58,20 @@ function perseMultipler(len,index,txt,numA){
     if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
         numB = perseX(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]];
+        i = numB[1]
+        //return [formulaIn,numB[1]];
+    }
+    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
+        formulaIn = persePlus(len,i,txt,formulaIn);
+        //formulaIn.Nchildren(numB[0]);
+        i = formulaIn[1];
+        formulaIn = formulaIn[0];
     }
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
-        return [formulaIn,i];
+        //return [formulaIn,i];
     }
-    
+    return [formulaIn,i];
 }
 function perseX(len,index,txt,numA){
     var formulaIn;
@@ -82,18 +89,26 @@ function perseX(len,index,txt,numA){
     if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
         numB = perseX(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]];
+        i = numB[1];
+        //return [formulaIn,numB[1]];
     }
     else if(i<len && txt[i]=="^"){
         numB = perseMultipler(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]];
+        i = numB[1];
+        //return [formulaIn,numB[1]];
     }
-    
+    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
+        formulaIn = persePlus(len,i,txt,formulaIn);
+        //formulaIn.Nchildren(numB[0]);
+        i = formulaIn[1];
+        formulaIn = formulaIn[0];
+    }
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
-        return [formulaIn,i];
+        //return [formulaIn,i];
     }
+    return [formulaIn,i];
 }
 function persePlus(len,index,txt,numA){
     var formulaIn;
@@ -111,17 +126,27 @@ function persePlus(len,index,txt,numA){
     if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
         numB = perseX(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]]
+        i = numB[1]
+        
+        //return [formulaIn,numB[1]]
     }
     else if(i<len && (txt[i]=="+" || txt[i]=="-")){
         numB = persePlus(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
-        return [formulaIn,numB[1]]
+        i = numB[1]
+        //return [formulaIn,numB[1]]
+    }
+    else if(i<len && txt[i]=="^"){
+        numB = perseMultipler(len,i,txt,numB);
+        formulaIn.Nchildren(numB[0]);
+        i = numB[1]
+        //return [formulaIn,numB[1]];
     }
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
-        return [formulaIn,i];
+        //return [formulaIn,i];
     }
+    return [formulaIn,i];
 }
 function persetext(len,index,txt){   //()内の解析
   //var len = txt.length;

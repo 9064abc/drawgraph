@@ -196,10 +196,10 @@ function Calc(x,y,formula){
     
     var ans;
     if(isNaN(numA)){
-        numA = Calc(numA);
+        numA = Calc(x,y,numA);
     }
     if(isNaN(numB)){
-        numB = Calc(numB);
+        numB = Calc(x,y,numB);
     }
     if(operator == "+"){
         ans = numA + numB;

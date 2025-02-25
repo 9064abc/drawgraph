@@ -153,7 +153,7 @@ function persetext(len,index,txt){   //()内の解析
     var numA = "";
     var formulaIn;
     j = index
-  /*for(var j=index;j<len;j++)*/ while(txt[j] != ")"){
+  /*for(var j=index;j<len;j++)*/ while(txt[j]!=")" && j<len){
     
         numA = findNum(len,j,txt);
         j = numA[1];

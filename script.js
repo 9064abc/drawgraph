@@ -170,7 +170,7 @@ function setPixel(x,y,r,g,b,a){
 }
 function draw(){
     var formulatxt = FormulaElem.value;
-    var len = formulatxt.length;
+    var len = formulatxt.length -1;
     console.log(formulatxt);
     formula = persetext(len,0,formulatxt)[0];
     console.log(formula);

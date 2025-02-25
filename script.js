@@ -189,9 +189,11 @@ function persetext(len,index,txt){   //()内の解析
 }
 
 function Calc(x,y,formula){
+    var operator = formula.node_type;
+    console.log(formula.children.length);
     var numA = formula.children[0];
     var numB = formula.children[1];
-    var operator = formula.node_type;
+    
     var ans;
     if(isNaN(numA)){
         numA = Calc(numA);

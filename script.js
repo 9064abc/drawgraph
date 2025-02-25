@@ -1,8 +1,9 @@
 const FormulaElem = document.getElementById("formulaTXT");
 const cvs = document.getElementById("cvs");
+const calcButton = document.getElementById("calc");
 CvsCtx = cvs.getContext('2d'); 
-CvsCtx.translate(0,cvs.height); 
-CvsCtx.scale(1,-1)
+/*CvsCtx.translate(0,cvs.height); 
+CvsCtx.scale(1,-1)*/
 
 const width = 500;
 const height = 500;
@@ -171,7 +172,7 @@ function draw(){
     var formulatxt = FormulaElem.value;
     var len = formulatxt.length;
     console.log(formulatxt);
-    formula = persetext(len,0,formulatxt);
+    formula = persetext(len,0,formulatxt)[0];
     console.log(formula);
   /*for (let x = -250; x < 250; x++) {
     for (let y = -250; y < 250; y++) {
@@ -185,7 +186,8 @@ function draw(){
       }
     }
   }*/
-  
+ctx.putImageData(imgData, 0, 0);
 }
 
-ctx.putImageData(imgData, -canvas.width / 2, -canvas.height / 2);
+//ctx.putImageData(imgData, -canvas.width / 2, -canvas.height / 2);
+calcButton.addEventListener("click",draw);

@@ -151,7 +151,7 @@ function persePlus(len,index,txt,numA){
 function persetext(len,index,txt){   //()内の解析
   //var len = txt.length;
     var numA = "";
-    var formulaIn;
+    var formulaIn = "";
     j = index
   /*for(var j=index;j<len;j++)*/ while(txt[j]!=")" && j<len){
     

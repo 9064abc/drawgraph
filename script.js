@@ -31,7 +31,7 @@ class Node{ //Node("+-*/^" , numA , numB)
 function findNum(len,index,txt){
     var k = index
     var num = ""
-    while(isNaN(txt[k])==false && k<len){
+    while((isNaN(txt[k])==false || txt[k]=="x" || txt[k]=="y") && k<len){
         num += txt[k]
         k += 1
     }
@@ -51,7 +51,7 @@ function perseMultipler(len,index,txt,numA){
     numB = findNum(len,i,txt);
     i = numB[1];
     numB = numB[0];
-    if((typeof numB) == "string"){  
+    if((typeof numB) == "string" && numB!="x" && numB!="y"){  
         numB = Number(numB);
     }
     
@@ -82,7 +82,7 @@ function perseX(len,index,txt,numA){
     numB = findNum(len,i,txt);
     i = numB[1];
     numB = numB[0];
-    if((typeof numB) == "string"){  
+    if((typeof numB) == "string" && numB!="x" && numB!="y"){  
         numB = Number(numB);
     }
     
@@ -120,7 +120,7 @@ function persePlus(len,index,txt,numA){
     numB = findNum(len,i,txt);
     i = numB[1];
     numB = numB[0];
-    if((typeof numB) == "string"){  
+    if((typeof numB) == "string" && numB!="x" && numB!="y"){  
         numB = Number(numB);
     }
     
@@ -159,7 +159,7 @@ function persetext(len,index,txt){   //()内の解析
         numA = findNum(len,j,txt);
         j = numA[1];
         numA = numA[0];
-        if((typeof numA) == "string"){  
+        if((typeof numA) == "string" && numA!="x" && numA!="y"){  
             numA = Number(numA);
         }
         /*if(txt[j]=="("){
@@ -191,17 +191,31 @@ function persetext(len,index,txt){   //()内の解析
 
 function Calc(x,y,formula){
     var operator = formula.node_type;
-    console.log(formula.children.length);
+    //console.log(formula.children.length);
     var numA = formula.children[0];
     var numB = formula.children[1];
-    
     var ans;
-    if(isNaN(numA)){
+    
+    if(numA == "x"){
+        numA = x;
+    }
+    else if(numA == "y"){
+        numA = y;
+    }
+    else if(isNaN(numA)){
         numA = Calc(x,y,numA);
     }
-    if(isNaN(numB)){
+    ///////////////////////////
+    if(numB == "x"){
+        numB = x;
+    }
+    else if(numB == "y"){
+        numB = y;
+    }
+    else if(isNaN(numB)){
         numB = Calc(x,y,numB);
     }
+    ////////////////////////////
     if(operator == "+"){
         ans = numA + numB;
     }
@@ -217,6 +231,7 @@ function Calc(x,y,formula){
     else if(operator == "^"){
         ans = numA ** numB;
     }
+    
     return ans;
 }
 function setPixel(x,y,r,g,b,a){
@@ -232,21 +247,21 @@ function draw(){
     console.log(formulatxt);
     formula = persetext(len,0,formulatxt)[0];
     console.log(formula);
-    ans = Calc(0,0,formula);
+    ans = Calc(1,1,formula);
     console.log(ans);
-  /*for (let x = -250; x < 250; x++) {
-    for (let y = -250; y < 250; y++) {
-      if (Calc(x,y,formula)) { // 例: 半径100以内の円
-        let canvasX = x + correctX;
-        let canvasY = correctY - y;
-        setPixel(x, y, 255, 0, 0, 255); // 赤で塗る
-      }
-      else{
-        setPixel(x, y, 0, 255, 0, 255);
-      }
+    for (let x = -250; x < 250; x++) {
+        for (let y = -250; y < 250; y++) {
+            if (Calc(x,y,formula)>1) { // 例: 半径100以内の円
+                let canvasX = x + correctX;
+                let canvasY = correctY - y;
+                setPixel(x, y, 255, 0, 0, 255); // 赤で塗る
+            }
+            else{
+                setPixel(x, y, 0, 255, 0, 255);
+            }
+        }
     }
-  }*/
-ctx.putImageData(imgData, 0, 0);
+    CvsCtx.putImageData(imgData, 0, 0);
 }
 
 //ctx.putImageData(imgData, -canvas.width / 2, -canvas.height / 2);

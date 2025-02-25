@@ -113,7 +113,7 @@ function persePlus(len,index,txt,numA){
         formulaIn.Nchildren(numB[0]);
         return [formulaIn,numB[1]]
     }
-    else if(i<len && (txt[i]=="+" || txt[i]=="-"){
+    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
         numB = persePlus(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
         return [formulaIn,numB[1]]

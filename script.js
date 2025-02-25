@@ -99,7 +99,7 @@ function perseX(len,index,txt,numA){
         //return [formulaIn,numB[1]];
     }
     else if(i<len && (txt[i]=="+" || txt[i]=="-")){
-        formulaIn.Nchildren(numB[0]);
+        formulaIn.Nchildren(numB);
         formulaIn = persePlus(len,i,txt,formulaIn);
         //formulaIn.Nchildren(numB[0]);
         i = formulaIn[1];

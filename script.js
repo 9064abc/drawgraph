@@ -254,9 +254,9 @@ function draw(){
     console.log(ans);
     for (let x = -250; x < 250; x++) {
         for (let y = -250; y < 250; y++) {
-            if (Calc(x,y,formula)>1) { // 例: 半径100以内の円
-                let canvasX = x + correctX;
-                let canvasY = correctY - y;
+            var canvasX = x + correctX;
+            var canvasY = correctY - y;
+            if (Calc(x,y,formula)>0) { // 例: 半径100以内の円      
                 setPixel(canvasX, canvasY, 255, 0, 0, 255); // 赤で塗る
             }
             else{

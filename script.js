@@ -12,7 +12,7 @@ correctY = Math.floor((height/2)-1);
 let imgData = CvsCtx.getImageData(0, 0, cvs.width, cvs.height);
 let data = imgData.data;
 
-class Node{
+class Node{ //Node("+-*/^" , numA , numB)
     node_type;
     children = [];
     constructor(node_type,child){
@@ -22,70 +22,116 @@ class Node{
         }
     }
     Nchildren(ch){
-      this.children.push(child);   
+        this.children.push(child);   
     }
 };
 
-function setPixel(x,y,r,g,b,a){
-  var index = (canvasY * width + canvasX) * 4;
-  data[index] = r;
-  data[index + 1] = g;
-  data[index + 2] = b;
-  data[index + 3] = a;
-}
+
 function findNum(len,index,txt){
-  var k = index
-  var num = ""
-  while(isNaN(txt[k] == false) && k<len){
-    num += txt[k]
-  }
-  return [num,k];
+    var k = index
+    var num = ""
+    while(isNaN(txt[k] == false) && k<len){
+        num += txt[k]
+        k += 1
+    }
+    return [num,k];
 }
-function persetext(len,index,txt){
-  //var len = txt.length;
-  var numX = "";
-  var formulaIn;
-  for(var j=index;j<len;j++){
+function perseMultipler(len,index,txt){
+    i = index;
+}
+function perseX(len,index,txt,numA){
+    var formulaIn;
+    var numB;
+    var i = index;
+    formulaIn = new Node(txt[i],numA);
+    i += 1
+    numB = findNum(len,j,txt);
+    i = numB[1];
+    numB = numB[0];
+    if(numB != ""){  
+        numB = Number(numB);
+    }
     
-    numX = findNum(len,j,txt);
-    j = numX[1];
-    numX = numX[0];
-    if(numX != ""){  
-      numX = Number(numX);
+    if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
+        numB = perseX(len,i,txt,numB);
+        formulaIn.Nchildren(numB[0]);
+        return [formulaIn,numB[1]];
+    }
+    else if(i<len && txt[i]=="^"){
+        numB = perseMultipler(len,i,txt,numB);
+        formulaIn.Nchildren(numB[0]);
+        return [formulaIn,numB[1]];
+    }
+    else if(i<len && txt[i]=="("){
+        numB = persetext(len,i+1,txt);
+        formulaIn.Nchildren(numB[0]);
+        return [formulaIn,numB[1]];
+    }
+    else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
+        formulaIn.Nchildren(numB);
+        return [formulaIn,i];
+    }
+}
+function persePlus(len,index,txt,numA){
+    var formulaIn;
+    var numB;
+    var i = index;
+    formulaIn = new Node(txt[i],numA);
+    i += 1
+    numB = findNum(len,j,txt);
+    i = numB[1];
+    numB = numB[0];
+    if(numB != ""){  
+        numB = Number(numB);
+    }
+    
+    if(i<len && (txt[i]=="*" || txt[i]=="/" || txt[i]=="^")){
+        numB = perseX(len,i,txt,numB);
+        formulaIn.Nchildren(numB[0]);
+        return [formulaIn,numB[1]]
+    }
+    else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
+        formulaIn.Nchildren(numB);
+        return [formulaIn,i];
+    }
+}
+function persetext(len,index,txt){   //()内の解析
+  //var len = txt.length;
+  var numA = "";
+  var formulaIn;
+  /*for(var j=index;j<len;j++)*/ while(txt[j] != ")"){
+    
+    numA = findNum(len,j,txt);
+    j = numA[1];
+    numA = numA[0];
+    if(numA != ""){  
+      numA = Number(numX);
     }
     if(txt[j]=="("){
-      formulaIn = new Node(txt[j],numX);
-      var numYi = persetext(len,j+1);
-      formulaIn.Nchildren(numY[0]);
-      return [formulaIn,numY[1]];
-      break
+      numA = persetext(len,j+1,txt); // "("の次から読む
+      j = numA[1]
+      numA = numA[0];
     }
-    
     else if(txt[j]=="+" || txt[j]=="-"){
-      formulaIn = new Node(txt[j],numX);
-      var numYi = persetext(len,j+1);
-      formulaIn.Nchildren(numY[0]);
-      return [formulaIn,numY[1]];
-      break
+      formulaIn = persePlus(len,j,txt,numA);
+      j = formulaIn[1];
+      formulaIn = formulaIn[0];
     }
-    else if(txt[j]=="*" || txt[j]=="/" || txt[j]=="^"){
-      formulaIn = new Node(txt[j],numX);
-      var numYi;
-      if(txt[j+1] == "("){
-        numYi = persetxt(len,j+1,txt);
-        j = numYi[1]
-      }
-      else{
-        numYi = findNum(len,j+1,txt);
-        j = numYi[1]
-      }
-      formulaIn.Nchildren(numYi[0]);
+    else if(txt[j]=="*" || txt[j]=="/"){
+      numA = perseX(len,j,txt,numA);
+      j = numA[1];
+      numA = numA[0];
     }
-    
-    else if(txt[j]==")"){
-      
+    else if(txt[j] == "^"){
+      numA = perseMultipler(len,j,txt,numA);
+      j = numA[1];
+      numA = numA[0];
     }
-  } 
+  }
+  if(formulaIn == ""){
+    formulaIn = numA;
+  }
+  return [formulaIn,j+1];
 }
 function Makeformula(len,txt){
   //var len = txt.length;
@@ -134,6 +180,13 @@ function Makeformula(len,txt){
 }
 function Calc(x,y,formula){
   
+}
+function setPixel(x,y,r,g,b,a){
+  var index = (canvasY * width + canvasX) * 4;
+  data[index] = r;
+  data[index + 1] = g;
+  data[index + 2] = b;
+  data[index + 3] = a;
 }
 function draw(){
   var formulatxt = FormulaElem.value;

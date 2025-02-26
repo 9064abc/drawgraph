@@ -178,9 +178,9 @@ function persetext(len,index,txt){   //()内の解析
             numA = numA[0];
         }
         else*/ if(txt[j]=="+" || txt[j]=="-"){
-            formulaIn = persePlus(len,j,txt,numA);
-            j = formulaIn[1];
-            formulaIn = formulaIn[0];
+            numA = persePlus(len,j,txt,numA);
+            j = numA[1];
+            numA = numA[0];
         }
         else if(txt[j]=="*" || txt[j]=="/"){
             numA = perseX(len,j,txt,numA);

@@ -133,14 +133,14 @@ function persePlus(len,index,txt,numA){
         
         //return [formulaIn,numB[1]]
     }
-    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
+    /*else if(i<len && (txt[i]=="+" || txt[i]=="-")){
         formulaIn.Nchildren(numB)
         formulaIn = persePlus(len,i,txt,formulaIn);
         //formulaIn.Nchildren(numB[0]);
         i = formulaIn[1];
         formulaIn = formulaIn[0]
         //return [formulaIn,numB[1]]
-    }
+    }*/
     else if(i<len && txt[i]=="^"){
         numB = perseMultipler(len,i,txt,numB);
         formulaIn.Nchildren(numB[0]);
@@ -158,14 +158,20 @@ function persetext(len,index,txt){   //()内の解析
     var numA = "";
     var formulaIn = "";
     j = index
-  /*for(var j=index;j<len;j++)*/ while(txt[j]!=")" && j<len){
+    numA = findNum(len,j,txt);
+    j = numA[1];
+    numA = numA[0];
+    if((typeof numA) == "string" && numA!="x" && numA!="y"){  
+        numA = Number(numA);
+    }
+    while(txt[j]!=")" && j<len){
     
-        numA = findNum(len,j,txt);
+        /*numA = findNum(len,j,txt);
         j = numA[1];
         numA = numA[0];
         if((typeof numA) == "string" && numA!="x" && numA!="y"){  
             numA = Number(numA);
-        }
+        }*/
         /*if(txt[j]=="("){
             numA = persetext(len,j+1,txt); // "("の次から読む
             j = numA[1]

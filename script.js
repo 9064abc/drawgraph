@@ -62,13 +62,13 @@ function perseMultipler(len,index,txt,numA){
         i = numB[1]
         //return [formulaIn,numB[1]];
     }
-    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
+    /*else if(i<len && (txt[i]=="+" || txt[i]=="-")){
         formulaIn.Nchildren(numB);
         formulaIn = persePlus(len,i,txt,formulaIn);
         //formulaIn.Nchildren(numB[0]);
         i = formulaIn[1];
         formulaIn = formulaIn[0];
-    }
+    }*/
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
         //return [formulaIn,i];
@@ -100,13 +100,13 @@ function perseX(len,index,txt,numA){
         i = numB[1];
         //return [formulaIn,numB[1]];
     }
-    else if(i<len && (txt[i]=="+" || txt[i]=="-")){
+    /*else if(i<len && (txt[i]=="+" || txt[i]=="-")){
         formulaIn.Nchildren(numB);
         formulaIn = persePlus(len,i,txt,formulaIn);
         //formulaIn.Nchildren(numB[0]);
         i = formulaIn[1];
         formulaIn = formulaIn[0];
-    }
+    }*/
     else {                            //if(i<len && (txt[i]=="+" || txt[i]=="-"))
         formulaIn.Nchildren(numB);
         //return [formulaIn,i];
